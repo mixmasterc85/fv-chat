@@ -47,6 +47,7 @@ module.exports.getProjects = async (data, headers) => {
           projectresponse.projectName
         );
         return jsonresponse;
+        console.log(jsonresponse);
       } else {
         return { message: "Project not found" };
       }
@@ -116,7 +117,6 @@ module.exports.getToken = async () => {
 
   return await axios.request(options);
 };
-
 module.exports.jsonresponse = (message, projectid, projectname) => {
   const jsonResponse = {
     fulfillment_response: {
