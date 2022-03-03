@@ -8,12 +8,14 @@ module.exports.getProjects = async (data, headers) => {
   try {
     const tokenData = await this.getToken();
     const projectsearchterm = data.sessionInfo.parameters.projectsearchterm;
+    const projectsearchtermNew = projectsearchterm.replace('.', "");
+
     if (tokenData.data.accessToken) {
       let newUrl = `${config.BASE_URL}/core/projects`;
       newUrl += data.number ? `?number=${data.number}` : "";
       newUrl += data.limit ? `?limit=1` : "";
       newUrl += data.offset ? `?offset=${data.offset}` : "";
-      newUrl += projectsearchterm ? `?name=${projectsearchterm}` : "";
+      newUrl += projectsearchtermNew ? `?name=${projectsearchtermNew}` : "";
 
       const tag = data.fulfillmentInfo.tag;
 
