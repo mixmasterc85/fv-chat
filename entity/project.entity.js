@@ -8,14 +8,12 @@ module.exports.getProjects = async (data) => {
   try {
     const tokenData = await this.getToken();
     const projectsearchterm = data.sessionInfo.parameters.projectsearchterm;
-    const projectsearchtermNew = projectsearchterm.replace('.', "");
-
     if (tokenData.data.accessToken) {
       let newUrl = `${config.BASE_URL}/core/projects`;
       newUrl += data.number ? `?number=${data.number}` : "";
       newUrl += data.limit ? `?limit=1` : "";
       newUrl += data.offset ? `?offset=${data.offset}` : "";
-      newUrl += projectsearchtermNew ? `?name=${projectsearchtermNew}` : "";
+      newUrl += projectsearchterm ? `?name=${projectsearchterm}` : "";
 
       const tag = data.fulfillmentInfo.tag;
 
@@ -32,7 +30,7 @@ module.exports.getProjects = async (data) => {
       };
       if (tag === "Search Term") {
         var message =
-          "I have located the project " +
+          "The project you are search for is " +
           data.sessionInfo.parameters.projectsearchterm;
       } else {
         return { message: "Search term is not found" };
@@ -49,7 +47,6 @@ module.exports.getProjects = async (data) => {
           projectresponse.projectName
         );
         return jsonresponse;
-        console.log(jsonresponse);
       } else {
         return { message: "Project not found" };
       }
@@ -119,6 +116,7 @@ module.exports.getToken = async () => {
 
   return await axios.request(options);
 };
+
 module.exports.jsonresponse = (message, projectid, projectname) => {
   const jsonResponse = {
     fulfillment_response: {
