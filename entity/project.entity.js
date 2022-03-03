@@ -4,7 +4,7 @@ const Crypto = require("cryptojs").Crypto;
 const config = require("../config/config.json");
 const Joi = require("@hapi/joi");
 
-module.exports.getProjects = async (data, headers) => {
+module.exports.getProjects = async (data) => {
   try {
     const tokenData = await this.getToken();
     const projectsearchterm = data.sessionInfo.parameters.projectsearchterm;
@@ -86,7 +86,7 @@ module.exports.addNotes = async (data) => {
       if (response.data) {
         return response.data;
       } else {
-        return "Project is not created";
+        return { message: "Project is not created" };
       }
     } else {
       return { message: "Filevinenote not found" };
