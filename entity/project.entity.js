@@ -32,7 +32,7 @@ module.exports.getProjects = async (data) => {
       };
       if (tag === "Search Term") {
         var message =
-          "I have located the project " +
+          "I have located the project" +
           data.sessionInfo.parameters.projectsearchterm;
       } else {
         let term = "Tag not found";
