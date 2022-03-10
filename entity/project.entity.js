@@ -8,7 +8,7 @@ module.exports.getProjects = async (data) => {
   try {
     const tokenData = await this.getToken();
     const projectsearchterm = data.sessionInfo.parameters.projectsearchterm;
-    const projectsearctermNew = projectsearchterm.replace(".","");
+    const projectsearctermNew = projectsearchterm.replace('.','');
 
     if (tokenData.data.accessToken) {
       let newUrl = `${config.BASE_URL}/core/projects`;
