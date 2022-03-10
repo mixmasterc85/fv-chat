@@ -8,13 +8,13 @@ module.exports.getProjects = async (data) => {
   try {
     const tokenData = await this.getToken();
     const projectsearchterm = data.sessionInfo.parameters.projectsearchterm;
-    const projectsearchtermNew = projectsearchterm.replace(".","");
+
     if (tokenData.data.accessToken) {
       let newUrl = `${config.BASE_URL}/core/projects`;
       newUrl += data.number ? `?number=${data.number}` : "";
       newUrl += data.limit ? `?limit=1` : "";
       newUrl += data.offset ? `?offset=${data.offset}` : "";
-      newUrl += projectsearchtermNew ? `?name=${projectsearchtermNew}` : "";
+      newUrl += projectsearchterm ? `?name=${projectsearchterm}` : "";
 
       const tag = data.fulfillmentInfo.tag;
 
@@ -31,10 +31,11 @@ module.exports.getProjects = async (data) => {
       };
       if (tag === "Search Term") {
         var message =
-          "I've located your project " +
+          "The project you are search for is " +
           data.sessionInfo.parameters.projectsearchterm;
       } else {
-        return { message: "Search term is not found" };
+        let term = "Tag not found";
+        return this.errorjsonresponse(term);
       }
 
       const resp = await axios.request(options);
@@ -49,11 +50,12 @@ module.exports.getProjects = async (data) => {
         );
         return jsonresponse;
       } else {
-        return { message: "Project not found" };
+        let errormessage = "Project not found";
+        return this.errorjsonresponse(errormessage);
       }
     }
   } catch (err) {
-    return err;
+    return this.errorjsonresponse(err);
   }
 };
 
@@ -62,6 +64,7 @@ module.exports.addNotes = async (data) => {
     const tokenData = await this.getToken();
 
     const tag = data.fulfillmentInfo.tag;
+    let errormessage = "Note is not created";
     if (tag === "Filevine Note") {
       const options = {
         method: "POST",
@@ -83,17 +86,16 @@ module.exports.addNotes = async (data) => {
       };
 
       const response = await axios.request(options);
-
       if (response.data) {
         return response.data;
       } else {
-        return { message: "Project is not created" };
+        return this.errorjsonresponse(errormessage);
       }
     } else {
-      return { message: "Filevinenote not found" };
+      return this.errorjsonresponse(errormessage);
     }
   } catch (err) {
-    return err;
+    return this.errorjsonresponse(err);
   }
 };
 
@@ -117,7 +119,6 @@ module.exports.getToken = async () => {
 
   return await axios.request(options);
 };
-
 module.exports.jsonresponse = (message, projectid, projectname) => {
   const jsonResponse = {
     fulfillment_response: {
@@ -140,4 +141,20 @@ module.exports.jsonresponse = (message, projectid, projectname) => {
     },
   };
   return jsonResponse;
+};
+
+module.exports.errorjsonresponse = (msg) => {
+  const errorjsonResponse = {
+    fulfillment_response: {
+      messages: [
+        {
+          text: {
+            //fulfillment text response
+            text: [msg],
+          },
+        },
+      ],
+    },
+  };
+  return errorjsonResponse;
 };
