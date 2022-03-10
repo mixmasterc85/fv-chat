@@ -8,6 +8,7 @@ module.exports.getProjects = async (data) => {
   try {
     const tokenData = await this.getToken();
     const projectsearchterm = data.sessionInfo.parameters.projectsearchterm;
+    const projectsearctermNew = projectsearchterm.replace(".","");
 
     if (tokenData.data.accessToken) {
       let newUrl = `${config.BASE_URL}/core/projects`;
@@ -31,7 +32,7 @@ module.exports.getProjects = async (data) => {
       };
       if (tag === "Search Term") {
         var message =
-          "The project you are search for is " +
+          "I have located the project " +
           data.sessionInfo.parameters.projectsearchterm;
       } else {
         let term = "Tag not found";
