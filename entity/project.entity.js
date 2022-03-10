@@ -15,7 +15,7 @@ module.exports.getProjects = async (data) => {
       newUrl += data.number ? `?number=${data.number}` : "";
       newUrl += data.limit ? `?limit=1` : "";
       newUrl += data.offset ? `?offset=${data.offset}` : "";
-      newUrl += projectsearchterm ? `?name=${projectsearchterm}` : "";
+      newUrl += projectsearchtermNew ? `?name=${projectsearchtermNew}` : "";
 
       const tag = data.fulfillmentInfo.tag;
 
